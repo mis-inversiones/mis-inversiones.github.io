@@ -8,7 +8,7 @@
  *   bucket): pass-through directo a la red, SIN cachear — así el cache-buster
  *   de remote.js y los datos en vivo siguen intactos.
  */
-const CACHE = "inversiones-shell-v1";
+const CACHE = "inversiones-shell-v2";   // v2 (15-09-2026): íconos nuevos
 const SHELL = [
   "./",
   "icons/icon-192.png",
