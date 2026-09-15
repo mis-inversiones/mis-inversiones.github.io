@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inversiones — Portafolio</title>
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260915000907">
+
+<!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
+     Flask local y en GitHub Pages). -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#05080d">
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Inversiones">
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
+    });
+  }
+</script>
+</head>
+<body>
+
+<header>
+  <h1>Inversiones <span id="headerAccounts">· IBK · Racional · Zesty</span></h1>
+  <div class="portfolio-toggle" id="portfolioToggle">
+    <button data-portfolio="EEUU" class="active">EEUU</button>
+    <button data-portfolio="Chile">Chile</button>
+    <button data-portfolio="Consolidado">Consolidado</button>
+  </div>
+  <nav id="nav">
+    <button data-view="dashboard" class="active">Dashboard</button>
+    <button data-view="cuentas">Cuentas</button>
+    <button data-view="activos">Activos</button>
+    <button data-view="transacciones">Transacciones</button>
+    <button data-view="evolucion">Evolución</button>
+    <button data-view="aportes">Aportes</button>
+    <button data-view="dividendos">Dividendos</button>
+    <button data-view="analisis">Análisis</button>
+    <button data-view="datos">Actualización</button>
+  </nav>
+  <div class="fx-badge" id="fxBadge" hidden title="Dólar de mercado con el que la app convierte USD↔CLP">
+    <span class="fx-label">Dólar</span>
+    <strong class="fx-rate" id="fxRate">—</strong>
+    <span class="fx-chg" id="fxChg"></span>
+  </div>
+  <div class="currency-toggle" id="currencyToggle">
+    <button data-cur="USD" class="active">USD</button>
+    <button data-cur="CLP">CLP</button>
+  </div>
+</header>
+
+<div id="remoteBanner" hidden></div>
+
+<main>
+
+<!-- ==================== 1. DASHBOARD ==================== -->
+<section class="view active" id="view-dashboard">
+  <div id="dashBanners"></div>
+  <div class="tiles" id="dashTiles"></div>
+  <div class="card">
+    <h3>Evolución del portafolio</h3>
+    <div class="chart-wrap"><canvas id="chartEvolution"></canvas></div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Rentabilidad mensual (TWR %)</h3>
+      <div class="chart-wrap"><canvas id="chartMonthly"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Distribución por cuenta</h3>
+      <div class="chart-wrap"><canvas id="chartByAccount"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Rentabilidad mensual en mapa de calor (TWR %)</h3>
+    <div class="table-scroll" id="monthlyHeatmap"></div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Distribución por activo</h3>
+      <div class="chart-wrap"><canvas id="chartByAsset"></canvas></div>
+      <p class="note" id="assetNote" hidden>Aún no hay posiciones en acciones; el portafolio es 100% caja.</p>
+    </div>
+    <div class="card">
+      <h3>Distribución por moneda (en USD)</h3>
+      <div id="currencyBar"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 2. CUENTAS ==================== -->
+<section class="view" id="view-cuentas">
+  <div class="chips" id="accountChips"></div>
+  <div class="tiles" id="accountTiles"></div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Evolución de la cuenta</h3>
+      <div class="chart-wrap"><canvas id="chartAccountEvolution"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Trazabilidad CLP → USD</h3>
+      <div id="fxTrace"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head">
+      <h3>Posiciones de la cuenta</h3>
+      <label class="pos-toggle">
+        <input type="checkbox" id="showClosedAcc"> Mostrar posiciones cerradas (cantidad 0)
+      </label>
+    </div>
+    <div class="table-scroll" id="accountPositions"></div>
+  </div>
+</section>
+
+<!-- ==================== 3. ACTIVOS ==================== -->
+<section class="view" id="view-activos">
+  <div class="chips" id="posModeChips">
+    <button data-mode="consolidated" class="active">Consolidado por activo</button>
+    <button data-mode="detail">Detalle por cuenta</button>
+    <label class="pos-toggle">
+      <input type="checkbox" id="showClosed"> Mostrar posiciones cerradas (cantidad 0)
+    </label>
+  </div>
+  <div class="card">
+    <h3 id="positionsTitle">Consolidado por activo <span class="badge" id="pricesAsOf"></span></h3>
+    <div class="table-scroll" id="positionsTable"></div>
+  </div>
+</section>
+
+<!-- ==================== 4. TRANSACCIONES ==================== -->
+<section class="view" id="view-transacciones">
+  <div class="filters">
+    <label>Cuenta
+      <select id="fAccount"><option value="">Todas</option></select>
+    </label>
+    <label>Tipo
+      <select id="fType">
+        <option value="">Todos</option>
+        <option value="BUY">Compra</option><option value="SELL">Venta</option>
+        <option value="DEPOSIT">Depósito</option><option value="WITHDRAWAL">Retiro</option>
+        <option value="FX">Cambio de moneda</option><option value="DIVIDEND">Dividendo</option>
+        <option value="FEE">Comisión / impuesto</option><option value="ADJUST">Ajuste</option>
+      </select>
+    </label>
+    <label>Ticker <input id="fTicker" size="8" placeholder="AAPL"></label>
+    <label>Desde <input type="date" id="fFrom"></label>
+    <label>Hasta <input type="date" id="fTo"></label>
+    <button class="btn" id="fApply">Filtrar</button>
+  </div>
+  <div class="card">
+    <div class="table-scroll" id="txTable"></div>
+  </div>
+</section>
+
+<!-- ==================== 5. EVOLUCIÓN ==================== -->
+<section class="view" id="view-evolucion">
+  <div class="card">
+    <h3>Valor del portafolio vs aportes netos</h3>
+    <div class="chart-wrap tall"><canvas id="chartEvolutionBig"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>Rentabilidad acumulada vs índices</h3>
+    <div class="chips" id="indexChips"></div>
+    <div class="chips" id="indexYearChips"></div>
+    <div class="chart-wrap tall"><canvas id="chartIndexCompare"></canvas></div>
+    <p class="note">Rentabilidad porcentual acumulada desde el inicio del historial. IPSA se aproxima
+      con ECH (iShares MSCI Chile ETF): Yahoo Finance no tiene histórico del índice oficial desde 2019.
+      IPSA e IBEX 35 incluyen el efecto del tipo de cambio contra el dólar.</p>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Rentabilidad anual (TWR %)</h3>
+      <div class="chart-wrap"><canvas id="chartAnnual"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Costo invertido vs valor actual por activo (USD)</h3>
+      <div class="chart-wrap"><canvas id="chartCostValue"></canvas></div>
+      <p class="note" id="costValueNote" hidden>Se mostrará cuando existan posiciones en acciones.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 6. APORTES ==================== -->
+<section class="view" id="view-aportes">
+  <div class="tiles" id="contribTiles"></div>
+  <div class="card">
+    <h3>Aportes mensuales (CLP + USD convertido a CLP) <span class="badge">meta: $1.200.000/mes</span></h3>
+    <div class="chart-wrap tall"><canvas id="chartContrib"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>Detalle por mes</h3>
+    <p class="note">Los aportes en USD se convierten a CLP con el tipo de cambio del
+      día de cada depósito. Todos los aportes de febrero 2026 (traspaso desde la
+      cuenta de acciones chilenas) no cuentan como aporte nuevo para la meta. El "saldo
+      acumulado" corre desde enero 2025: el excedente de un mes bueno se resta del
+      déficit de los meses siguientes, y el mes en curso no suma déficit hasta terminar.</p>
+    <div class="table-scroll" id="contribTable"></div>
+  </div>
+  <div class="card">
+    <h3>Proyección hacia una meta</h3>
+    <div class="filters">
+      <label>Monto objetivo
+        <input type="number" id="projTarget" min="0" step="100000" placeholder="100000000">
+      </label>
+      <div class="currency-toggle" id="projCurrencyToggle">
+        <button data-cur="CLP" class="active">CLP</button>
+        <button data-cur="USD">USD</button>
+      </div>
+    </div>
+    <div id="projResult"></div>
+    <p class="note">Escenario conservador: solo tu aporte mensual promedio de los últimos
+      12 meses, sin asumir ganancias de mercado. Escenario con rentabilidad: además asume
+      que se repite tu rentabilidad (TWR) anualizada de los últimos 12 meses — es un
+      supuesto, no una garantía; el portafolio ha sido volátil.</p>
+  </div>
+</section>
+
+<!-- ==================== 6b. DIVIDENDOS ==================== -->
+<section class="view" id="view-dividendos">
+  <div class="filters">
+    <label>Año
+      <select id="divYear"><option value="">Todos</option></select>
+    </label>
+    <label>Cuenta
+      <select id="divAccount"><option value="">Todas</option></select>
+    </label>
+    <label>Activo
+      <select id="divTicker"><option value="">Todos</option></select>
+    </label>
+  </div>
+  <div class="tiles" id="divTiles"></div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Dividendos por año</h3>
+      <div class="chart-wrap"><canvas id="chartDivYear"></canvas></div>
+      <div id="divYearDetail" class="div-year-detail"></div>
+    </div>
+    <div class="card">
+      <h3>Dividendos por mes (últimos 24 meses)</h3>
+      <div class="chart-wrap"><canvas id="chartDivMonth"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head">
+      <h3>Por activo</h3>
+      <div class="card-head-tools">
+        <input type="search" id="divAssetSearch" class="table-search"
+               placeholder="Buscar activo…" autocomplete="off">
+        <label class="pos-toggle">
+          <input type="checkbox" id="showClosedDiv"> Mostrar activos ya vendidos (sin posición)
+        </label>
+      </div>
+    </div>
+    <p class="note">Los montos se muestran en la moneda del toggle (los pagos en CLP/USD
+      se convierten al tipo de cambio del día de cada pago). Yield 12m = dividendos de los
+      últimos 12 meses ÷ valor actual de la posición; sobre costo = ÷ costo invertido.
+      La retención es el impuesto en origen (IBK/Racional) — los dividendos chilenos
+      llegan líquidos.</p>
+    <div class="table-scroll" id="divByAsset"></div>
+  </div>
+  <div class="card">
+    <h3>Detalle de pagos <span class="badge" id="divCount"></span></h3>
+    <div class="table-scroll" id="divDetail"></div>
+  </div>
+</section>
+
+<!-- ==================== 7. ANÁLISIS ==================== -->
+<section class="view" id="view-analisis">
+  <div class="card">
+    <h3>Ranking de cuentas</h3>
+    <div class="grid-2">
+      <div class="chart-wrap"><canvas id="chartAccountRanking"></canvas></div>
+      <div class="table-scroll" id="rankingTable"></div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Comisiones de trading pagadas</h3>
+      <div class="table-scroll" id="commissionsTable"></div>
+    </div>
+    <div class="card">
+      <h3>Impuesto retenido por año</h3>
+      <div class="table-scroll" id="taxTable"></div>
+      <p class="note">IBK: filas de impuesto identificadas por descripción. Racional: se
+        asume que todo cargo tipo "Comisión / impuesto" es retención (no cobra otras
+        comisiones separadas). Zesty: sin datos de dividendos todavía.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 8. ACTUALIZACIÓN ==================== -->
+<section class="view" id="view-datos">
+  <div class="card">
+    <h3>Subir documento</h3>
+    <p class="note">Elige la cuenta y el tipo de documento, suelta el archivo y listo:
+      se guarda en su carpeta con el nombre que corresponde, se extraen los movimientos
+      y se actualizan los datos.</p>
+    <div class="upload-form">
+      <label>Cuenta
+        <select id="upAccount"></select>
+      </label>
+      <label>Tipo de documento
+        <select id="upType"></select>
+      </label>
+    </div>
+    <p class="note" id="upHelp"></p>
+    <div class="dropzone" id="upDrop">
+      <input type="file" id="upFile" hidden>
+      <strong>Suelta el archivo aquí</strong>
+      <span>o haz clic para elegirlo · <span id="upExt">—</span></span>
+    </div>
+    <div id="upResult"></div>
+    <div id="upQueue"></div>
+  </div>
+  <div class="card">
+    <h3>Acciones</h3>
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <button class="btn" id="btnImport">Importar archivos nuevos</button>
+      <button class="btn" id="btnPrices">Actualizar precios</button>
+    </div>
+    <p class="note">«Importar» revisa las carpetas de las cuentas y <code>staging/</code> por
+      documentos que todavía no se hayan procesado — útil si copiaste archivos a mano.
+      Para un documento nuevo es más simple subirlo arriba.</p>
+    <p class="note" id="actionResult"></p>
+  </div>
+  <div class="card">
+    <h3>Posibles duplicados en revisión</h3>
+    <div id="reviewQueue"></div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Archivos procesados</h3>
+      <div class="table-scroll" id="filesTable"></div>
+    </div>
+    <div class="card">
+      <h3>Registro de importación</h3>
+      <div class="table-scroll" style="max-height:340px; overflow-y:auto;" id="logTable"></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="modal-overlay" id="priceModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="priceModalTitle">Historial de precio</h3>
+      <button class="modal-close" id="priceModalClose">&times;</button>
+    </div>
+    <div class="chart-wrap"><canvas id="chartPriceHistory"></canvas></div>
+  </div>
+</div>
+
+<!-- Login del modo remoto (solo aparece cuando el sitio se sirve desde Supabase) -->
+<div class="modal-overlay" id="loginOverlay">
+  <div class="modal login-modal">
+    <div class="modal-header"><h3>Inversiones — Acceso</h3></div>
+    <label>Email
+      <input type="email" id="loginEmail" autocomplete="username" inputmode="email">
+    </label>
+    <label>Contraseña
+      <input type="password" id="loginPassword" autocomplete="current-password">
+    </label>
+    <button class="btn" id="loginBtn">Entrar</button>
+    <p class="login-error" id="loginError"></p>
+  </div>
+</div>
+
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260915000907"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260915000907"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260915000907"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260915000907"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260915000907"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260915000907"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260915000907"></script>
+</body>
+</html>
