@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260918181231">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260918183651">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -301,6 +301,40 @@
         comisiones separadas). Zesty: sin datos de dividendos todavía.</p>
     </div>
   </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h3>Consenso de analistas</h3>
+      <span class="note" id="analystAsOf"></span>
+    </div>
+    <p class="note">El precio objetivo es el <strong>promedio de las opiniones</strong> de los
+      analistas que siguen cada acción, no un pronóstico: tienden a ser optimistas y el rango
+      entre el mínimo y el máximo suele ser enorme. Mira siempre el rango y cuántos analistas
+      hay detrás — un objetivo sostenido por 2 no es lo mismo que uno de 50.</p>
+    <div class="table-scroll" id="analystTable"></div>
+  </div>
+
+  <div class="card">
+    <h3>Fundamentales por activo</h3>
+    <div class="table-scroll" id="fundTable"></div>
+    <p class="note" id="betaNote"></p>
+  </div>
+
+  <div class="card">
+    <h3>Posición en el rango de 52 semanas</h3>
+    <p class="note">Dónde está hoy cada acción entre su mínimo y su máximo del último año.</p>
+    <div id="rangeList"></div>
+  </div>
+
+  <div class="card">
+    <h3>Qué activo explica tu ganancia</h3>
+    <div class="grid-2">
+      <div class="chart-wrap"><canvas id="chartAttribution"></canvas></div>
+      <div class="table-scroll" id="attributionTable"></div>
+    </div>
+    <p class="note">Incluye la ganancia no realizada, lo ya realizado en ventas y los dividendos
+      cobrados de cada activo. El gráfico muestra los 12 de mayor impacto; la tabla los lista todos.</p>
+  </div>
 </section>
 
 <!-- ==================== 8. ACTUALIZACIÓN ==================== -->
@@ -381,12 +415,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260918181231"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260918181231"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260918181231"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260918181231"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260918181231"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260918181231"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260918181231"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260918183651"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260918183651"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260918183651"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260918183651"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260918183651"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260918183651"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260918183651"></script>
 </body>
 </html>
