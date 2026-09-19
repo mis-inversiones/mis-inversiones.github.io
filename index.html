@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260919134728">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260919141816">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -43,6 +43,7 @@
     <button data-view="dividendos">Dividendos</button>
     <button data-view="seguimiento">Seguimiento</button>
     <button data-view="analisis">Análisis</button>
+    <button data-view="impuestos">Impuestos</button>
     <button data-view="datos">Actualización</button>
   </nav>
   <a class="app-switch" id="finanzasLink" hidden href="https://diego94diaz-oss.github.io/finanzas-personales/"
@@ -356,6 +357,101 @@
   </div>
 </section>
 
+<!-- ==================== 8b. IMPUESTOS (SII) ==================== -->
+<section class="view" id="view-impuestos">
+  <nav class="subtabs" data-view="impuestos">
+    <button data-sub="resumen" class="active">Resumen</button>
+    <button data-sub="operaciones">Operaciones</button>
+    <button data-sub="simulador">Simulador</button>
+    <button data-sub="oportunidades">Oportunidades</button>
+    <button data-sub="supuestos">Supuestos</button>
+  </nav>
+
+  <div class="subview" data-sub="resumen">
+    <div class="card">
+      <div class="card-head">
+        <h3>Impuesto estimado del año</h3>
+        <div class="card-head-tools">
+          <label class="note" for="taxAnio">Año</label>
+          <select id="taxAnio"></select>
+        </div>
+      </div>
+      <p class="note">Tu Global Complementario depende de <strong>toda</strong> tu renta, así que
+        sin tu sueldo el cálculo queda incompleto. Se guarda solo en este computador.</p>
+      <div class="tax-renta">
+        <label for="taxRenta">Renta del trabajo del año (bruta, sin inversiones)</label>
+        <input type="text" id="taxRenta" inputmode="numeric" placeholder="$0">
+        <button id="taxGuardar">Guardar</button>
+        <span class="note" id="taxRentaMsg"></span>
+      </div>
+      <div class="tiles" id="taxTiles"></div>
+      <div class="table-scroll" id="taxDesglose"></div>
+    </div>
+    <div class="card">
+      <h3>Comparación por año</h3>
+      <div class="table-scroll" id="taxAnios"></div>
+    </div>
+  </div>
+
+  <div class="subview" data-sub="operaciones" hidden>
+    <div class="card">
+      <div class="card-head">
+        <h3>Ventas del año y su tratamiento</h3>
+      </div>
+      <p class="note">Cada venta con su mayor valor en pesos y el régimen que le corresponde.
+        El costo va al tipo de cambio del día de cada compra y, en las chilenas,
+        reajustado por IPC como exige el SII (eso <em>baja</em> el impuesto).</p>
+      <div class="table-scroll" id="taxVentas"></div>
+    </div>
+    <div class="card">
+      <h3>Dividendos del año</h3>
+      <div class="table-scroll" id="taxDividendos"></div>
+    </div>
+  </div>
+
+  <div class="subview" data-sub="simulador" hidden>
+    <div class="card">
+      <h3>¿Cuánto impuesto me costaría vender?</h3>
+      <p class="note">Calcula el impuesto de una venta <strong>antes</strong> de hacerla, con tu
+        tramo real. Para las acciones chilenas con presencia bursátil compara además
+        contra venderlas en 2027, cuando el artículo 107 pasa a 0%.</p>
+      <div class="tax-sim">
+        <input type="text" id="simTicker" placeholder="Nemotécnico (ILC, GOOGL…)" maxlength="20" autocomplete="off">
+        <input type="text" id="simCantidad" placeholder="Cantidad" inputmode="decimal">
+        <input type="text" id="simPrecio" placeholder="Precio por acción" inputmode="decimal">
+        <button id="simCalcular">Calcular</button>
+      </div>
+      <div id="simResultado"></div>
+    </div>
+  </div>
+
+  <div class="subview" data-sub="oportunidades" hidden>
+    <div class="card">
+      <h3>Oportunidades detectadas</h3>
+      <div id="taxOportunidades"></div>
+    </div>
+  </div>
+
+  <div class="subview" data-sub="supuestos" hidden>
+    <div class="card">
+      <h3>Supuestos del cálculo</h3>
+      <div id="taxSupuestos"></div>
+    </div>
+    <div class="card">
+      <h3>Presencia bursátil de tus acciones chilenas</h3>
+      <p class="note">El artículo 107 (10% fijo, y 0% desde 2027) solo aplica a acciones
+        <strong>con presencia bursátil</strong> compradas y vendidas en bolsa. La CMF la
+        revisa cada trimestre, así que las dudosas se tratan por el régimen general —
+        el más caro. Si tu corredora te confirma que alguna sí tiene, márcala acá.</p>
+      <div class="table-scroll" id="taxPresencia"></div>
+    </div>
+    <div class="card">
+      <h3>Cómo tributa cada cosa</h3>
+      <div class="tax-guia" id="taxGuia"></div>
+    </div>
+  </div>
+</section>
+
 <!-- ==================== 8. ANÁLISIS ==================== -->
 <section class="view" id="view-analisis">
   <nav class="subtabs" data-view="analisis">
@@ -525,12 +621,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260919134728"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260919134728"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260919134728"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260919134728"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260919134728"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260919134728"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260919134728"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260919141816"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260919141816"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260919141816"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260919141816"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260919141816"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260919141816"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260919141816"></script>
 </body>
 </html>
