@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260919141816">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260919143338">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -378,8 +378,13 @@
       </div>
       <p class="note">Tu Global Complementario depende de <strong>toda</strong> tu renta, así que
         sin tu sueldo el cálculo queda incompleto. Se guarda solo en este computador.</p>
+      <p class="note">El número que va al Global Complementario es tu renta <strong>después de
+        descontar las cotizaciones previsionales</strong> (AFP + salud + cesantía), no la
+        remuneración imponible de la AFP ni tu sueldo bruto. El valor exacto está en el
+        <strong>certificado de sueldos</strong> que tu empleador informa al SII; si partes de la
+        remuneración imponible, descuéntale alrededor de un 19%.</p>
       <div class="tax-renta">
-        <label for="taxRenta">Renta del trabajo del año (bruta, sin inversiones)</label>
+        <label for="taxRenta">Renta tributable del año (sin inversiones)</label>
         <input type="text" id="taxRenta" inputmode="numeric" placeholder="$0">
         <button id="taxGuardar">Guardar</button>
         <span class="note" id="taxRentaMsg"></span>
@@ -621,12 +626,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260919141816"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260919141816"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260919141816"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260919141816"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260919141816"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260919141816"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260919141816"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260919143338"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260919143338"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260919143338"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260919143338"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260919143338"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260919143338"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260919143338"></script>
 </body>
 </html>
