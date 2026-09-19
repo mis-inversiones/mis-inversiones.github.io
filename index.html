@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260918212329">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260918220851">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -243,6 +243,13 @@
       <select id="divTicker"><option value="">Todos</option></select>
     </label>
   </div>
+  <nav class="subtabs" data-view="dividendos">
+    <button data-sub="resumen" class="active">Resumen</button>
+    <button data-sub="activos">Por activo</button>
+    <button data-sub="declarados">Declarados por la empresa</button>
+    <button data-sub="pagos">Detalle de pagos</button>
+  </nav>
+  <div class="subview" data-sub="resumen">
   <div class="tiles" id="divTiles"></div>
   <div class="grid-2">
     <div class="card">
@@ -255,6 +262,9 @@
       <div class="chart-wrap"><canvas id="chartDivMonth"></canvas></div>
     </div>
   </div>
+  </div><!-- /resumen -->
+
+  <div class="subview" data-sub="activos" hidden>
   <div class="card">
     <div class="card-head">
       <h3>Por activo</h3>
@@ -273,6 +283,9 @@
       llegan líquidos.</p>
     <div class="table-scroll" id="divByAsset"></div>
   </div>
+  </div><!-- /activos -->
+
+  <div class="subview" data-sub="declarados" hidden>
   <div class="card">
     <div class="card-head">
       <h3>Dividendos declarados por la empresa</h3>
@@ -284,16 +297,32 @@
       última para tener derecho al pago), que en la Bolsa de Santiago figura como fecha
       límite. Ojo: cuando una empresa reparte un definitivo y un adicional el mismo día,
       la fuente los entrega <strong>sumados</strong> (ILC 22-05-2026 = 857,008 + 2,992 = 860).</p>
+    <div class="subtabs subtabs-inline" id="divDeclaredGroup">
+      <button data-group="detalle" class="active">Detalle</button>
+      <button data-group="anio">Por año</button>
+      <button data-group="mes">Por mes</button>
+    </div>
     <div class="table-scroll" id="divDeclared"></div>
   </div>
+  </div><!-- /declarados -->
+
+  <div class="subview" data-sub="pagos" hidden>
   <div class="card">
     <h3>Detalle de pagos <span class="badge" id="divCount"></span></h3>
     <div class="table-scroll" id="divDetail"></div>
   </div>
+  </div><!-- /pagos -->
 </section>
 
 <!-- ==================== 7. ANÁLISIS ==================== -->
 <section class="view" id="view-analisis">
+  <nav class="subtabs" data-view="analisis">
+    <button data-sub="cuentas" class="active">Cuentas y costos</button>
+    <button data-sub="analistas">Analistas</button>
+    <button data-sub="fundamentales">Fundamentales</button>
+    <button data-sub="ganancia">Origen de la ganancia</button>
+  </nav>
+  <div class="subview" data-sub="cuentas">
   <div class="card">
     <h3>Ranking de cuentas</h3>
     <div class="grid-2">
@@ -315,6 +344,9 @@
     </div>
   </div>
 
+  </div><!-- /cuentas -->
+
+  <div class="subview" data-sub="analistas" hidden>
   <div class="card">
     <div class="card-head">
       <h3>Consenso de analistas</h3>
@@ -326,7 +358,9 @@
       hay detrás — un objetivo sostenido por 2 no es lo mismo que uno de 50.</p>
     <div class="table-scroll" id="analystTable"></div>
   </div>
+  </div><!-- /analistas -->
 
+  <div class="subview" data-sub="fundamentales" hidden>
   <div class="card">
     <h3>Fundamentales por activo</h3>
     <div class="table-scroll" id="fundTable"></div>
@@ -338,7 +372,9 @@
     <p class="note">Dónde está hoy cada acción entre su mínimo y su máximo del último año.</p>
     <div id="rangeList"></div>
   </div>
+  </div><!-- /fundamentales -->
 
+  <div class="subview" data-sub="ganancia" hidden>
   <div class="card">
     <h3>Qué activo explica tu ganancia</h3>
     <div class="grid-2">
@@ -348,6 +384,7 @@
     <p class="note">Incluye la ganancia no realizada, lo ya realizado en ventas y los dividendos
       cobrados de cada activo. El gráfico muestra los 12 de mayor impacto; la tabla los lista todos.</p>
   </div>
+  </div><!-- /ganancia -->
 </section>
 
 <!-- ==================== 8. ACTUALIZACIÓN ==================== -->
@@ -428,12 +465,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260918212329"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260918212329"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260918212329"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260918212329"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260918212329"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260918212329"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260918212329"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260918220851"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260918220851"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260918220851"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260918220851"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260918220851"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260918220851"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260918220851"></script>
 </body>
 </html>
