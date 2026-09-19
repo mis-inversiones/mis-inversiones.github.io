@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260918235851">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260919005517">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -375,14 +375,32 @@
     <div class="card">
       <h3>Comisiones de trading pagadas</h3>
       <div class="table-scroll" id="commissionsTable"></div>
+      <p class="note">La tasa se calcula solo sobre operaciones que pagaron comisión: las
+        demás son traspasos de custodia y reconstrucciones modeladas por la app, no
+        operaciones reales. La <strong>mediana</strong> importa tanto como la media
+        porque hay corredoras que cobran por acción con un mínimo por orden, donde las
+        órdenes chicas pagan mucho más que el promedio.</p>
     </div>
     <div class="card">
       <h3>Impuesto retenido por año</h3>
       <div class="table-scroll" id="taxTable"></div>
-      <p class="note">IBK: filas de impuesto identificadas por descripción. Racional: se
-        asume que todo cargo tipo "Comisión / impuesto" es retención (no cobra otras
-        comisiones separadas). Zesty: sin datos de dividendos todavía.</p>
+      <p class="note">IBK: filas de impuesto identificadas por descripción. Racional y
+        Zesty: retención NRA del 15% sobre dividendos (tratado con Chile). Chile: los
+        dividendos llegan líquidos, sin retención.</p>
     </div>
+  </div>
+
+  <div class="card">
+    <h3>Costo del cambio de moneda (spread)</h3>
+    <div class="tiles" id="fxSpreadTiles"></div>
+    <div class="table-scroll" id="fxSpreadTable"></div>
+    <p class="note">Compara el tipo de cambio que aplicó la plataforma contra el dólar de
+      mercado de ese día. El dólar de mercado es el <em>cierre</em> del día y tu conversión
+      pudo hacerse a otra hora, así que cada fila lleva unas décimas de ruido por timing;
+      el promedio sobre varias operaciones sí es representativo. Solo aparecen las cuentas
+      que registran la conversión: en <strong>IBK</strong> los dólares llegan ya cambiados
+      desde fuera y en <strong>Racional</strong> el lado en pesos no está documentado, así
+      que su spread no se puede medir con estos datos.</p>
   </div>
 
   </div><!-- /cuentas -->
@@ -506,12 +524,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260918235851"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260918235851"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260918235851"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260918235851"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260918235851"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260918235851"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260918235851"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260919005517"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260919005517"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260919005517"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260919005517"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260919005517"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260919005517"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260919005517"></script>
 </body>
 </html>
