@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260918232146">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260918235851">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -41,6 +41,7 @@
     <button data-view="evolucion">Evolución</button>
     <button data-view="aportes">Aportes</button>
     <button data-view="dividendos">Dividendos</button>
+    <button data-view="seguimiento">Seguimiento</button>
     <button data-view="analisis">Análisis</button>
     <button data-view="datos">Actualización</button>
   </nav>
@@ -328,7 +329,33 @@
   </div><!-- /pagos -->
 </section>
 
-<!-- ==================== 7. ANÁLISIS ==================== -->
+<!-- ==================== 7. SEGUIMIENTO ==================== -->
+<section class="view" id="view-seguimiento">
+  <div class="card">
+    <h3>Agregar a la lista</h3>
+    <p class="note">Acciones que quieres vigilar sin tenerlas en cartera. <strong>No entran
+      en ningún cálculo</strong> de tu portafolio: ni valor, ni rentabilidad, ni distribución.
+      Se les piden los mismos precios y datos de analistas que a tus posiciones.</p>
+    <div class="watch-add">
+      <input type="text" id="watchTicker" placeholder="Nemotécnico (AAPL, SQM-B…)"
+             autocomplete="off" maxlength="20">
+      <input type="text" id="watchNote" placeholder="Nota (opcional): por qué la sigues"
+             autocomplete="off" maxlength="200">
+      <button id="watchAdd">Agregar</button>
+    </div>
+    <div id="watchResult" class="note"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h3>En seguimiento</h3>
+      <span class="note" id="watchCount"></span>
+    </div>
+    <div class="table-scroll" id="watchTable"></div>
+  </div>
+</section>
+
+<!-- ==================== 8. ANÁLISIS ==================== -->
 <section class="view" id="view-analisis">
   <nav class="subtabs" data-view="analisis">
     <button data-sub="cuentas" class="active">Cuentas y costos</button>
@@ -479,12 +506,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260918232146"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260918232146"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260918232146"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260918232146"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260918232146"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260918232146"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260918232146"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260918235851"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260918235851"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260918235851"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260918235851"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260918235851"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260918235851"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260918235851"></script>
 </body>
 </html>
