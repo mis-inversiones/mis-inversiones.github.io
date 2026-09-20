@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260920202328">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260920204437">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -785,29 +785,31 @@
     <div id="upResult"></div>
     <div id="upQueue"></div>
   </div>
-  <div class="card">
-    <h3>Acciones</h3>
-    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-      <button class="btn" id="btnImport">Importar archivos nuevos</button>
-      <button class="btn" id="btnPrices">Actualizar precios</button>
+  <div class="grid-2 grid-top">
+    <div class="card">
+      <h3>Acciones</h3>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn" id="btnImport">Importar archivos nuevos</button>
+        <button class="btn" id="btnPrices">Actualizar precios</button>
+      </div>
+      <p class="note">«Importar» revisa las carpetas de las cuentas y <code>staging/</code> por
+        documentos que todavía no se hayan procesado — útil si copiaste archivos a mano.
+        Para un documento nuevo es más simple subirlo arriba.</p>
+      <p class="note" id="actionResult"></p>
     </div>
-    <p class="note">«Importar» revisa las carpetas de las cuentas y <code>staging/</code> por
-      documentos que todavía no se hayan procesado — útil si copiaste archivos a mano.
-      Para un documento nuevo es más simple subirlo arriba.</p>
-    <p class="note" id="actionResult"></p>
+    <div class="card">
+      <h3>Posibles duplicados en revisión</h3>
+      <div id="reviewQueue"></div>
+    </div>
   </div>
-  <div class="card">
-    <h3>Posibles duplicados en revisión</h3>
-    <div id="reviewQueue"></div>
-  </div>
-  <div class="grid-2">
+  <div class="grid-2 grid-top">
     <div class="card">
       <h3>Archivos procesados</h3>
       <div class="table-scroll" id="filesTable"></div>
     </div>
     <div class="card">
       <h3>Registro de importación</h3>
-      <div class="table-scroll" style="max-height:340px; overflow-y:auto;" id="logTable"></div>
+      <div class="table-scroll log-scroll" id="logTable"></div>
     </div>
   </div>
 </section>
@@ -839,12 +841,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260920202328"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260920202328"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260920202328"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260920202328"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260920202328"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260920202328"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260920202328"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260920204437"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260920204437"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260920204437"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260920204437"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260920204437"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260920204437"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260920204437"></script>
 </body>
 </html>
