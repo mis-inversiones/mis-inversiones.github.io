@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260920002325">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260920010038">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -342,6 +342,29 @@
     </div>
     <div class="table-scroll" id="watchTable"></div>
   </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h3>Notas</h3>
+      <span class="note" id="notesCount"></span>
+    </div>
+    <p class="note">Observaciones, ideas de compra o venta, recordatorios. Puedes
+      asociar una nota a una acción (de tu cartera o de la lista) o dejarla general.
+      <strong>No entran en ningún cálculo</strong> del portafolio.</p>
+    <div class="note-add">
+      <textarea id="noteText" rows="2" maxlength="2000"
+        placeholder="Ej.: si ILC baja de $22.000, comprar 50 más"></textarea>
+      <div class="note-add-row">
+        <select id="noteKind"></select>
+        <select id="noteTicker"></select>
+        <button id="noteSave">Guardar nota</button>
+        <button id="noteCancel" class="btn small" hidden>Cancelar</button>
+        <span class="note" id="noteMsg"></span>
+      </div>
+    </div>
+    <div class="note-filters" id="noteFilters"></div>
+    <div id="notesList"></div>
+  </div>
 </section>
 
 <!-- ==================== 8b. IMPUESTOS (SII) ==================== -->
@@ -614,12 +637,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260920002325"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260920002325"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260920002325"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260920002325"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260920002325"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260920002325"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260920002325"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260920010038"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260920010038"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260920010038"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260920010038"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260920010038"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260920010038"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260920010038"></script>
 </body>
 </html>
