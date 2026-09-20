@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260920010038">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260920011425">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -430,10 +430,13 @@
       <p class="note">Calcula el impuesto de una venta <strong>antes</strong> de hacerla, con tu
         tramo real. Para las acciones chilenas con presencia bursátil compara además
         contra venderlas en 2027, cuando el artículo 107 pasa a 0%.</p>
-      <div class="tax-sim">
-        <select id="simTicker"></select>
-        <input type="text" id="simCantidad" placeholder="Cantidad" inputmode="decimal">
-        <input type="text" id="simPrecio" placeholder="Precio por acción" inputmode="decimal">
+      <p class="note">Puedes simular <strong>varias ventas a la vez</strong>, y conviene:
+        el resultado <strong>no es la suma</strong> de simularlas por separado. La exención de
+        10 UTA es una sola para todo el año y el Global Complementario es progresivo, así que
+        vender dos cosas juntas puede costar más que cada una por su lado.</p>
+      <div id="simFilas"></div>
+      <div class="sim-acciones">
+        <button id="simAgregar" class="btn small">+ Agregar otra acción</button>
         <button id="simCalcular">Calcular</button>
       </div>
       <p class="note" id="simAyuda"></p>
@@ -637,12 +640,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260920010038"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260920010038"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260920010038"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260920010038"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260920010038"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260920010038"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260920010038"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260920011425"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260920011425"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260920011425"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260920011425"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260920011425"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260920011425"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260920011425"></script>
 </body>
 </html>
