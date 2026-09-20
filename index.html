@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260920151256">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260920153348">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -639,6 +639,10 @@
   <div class="subview" data-sub="camino">
     <div class="tiles" id="fiTiles"></div>
     <div class="card">
+      <h3>Tu plan en dos fases</h3>
+      <div id="fiFases"></div>
+    </div>
+    <div class="card">
       <h3>Tu avance</h3>
       <div id="fiBarra"></div>
       <div id="fiNivel"></div>
@@ -690,8 +694,16 @@
       <div class="fi-form">
         <span class="fi-campo"><label for="fiCosto">Costo de vida mensual (CLP)</label>
           <input type="text" id="fiCosto" inputmode="numeric" placeholder="$0"></span>
-        <span class="fi-campo"><label for="fiYield">Yield objetivo de la cartera (%)</label>
-          <input type="text" id="fiYield" inputmode="decimal" placeholder="4"></span>
+        <span class="fi-campo"><label for="fiMezcla">% en chilenas al final</label>
+          <input type="text" id="fiMezcla" inputmode="decimal" placeholder="80"></span>
+        <span class="fi-campo"><label for="fiYieldCL">Yield de tus chilenas (%)</label>
+          <input type="text" id="fiYieldCL" inputmode="decimal" placeholder="el real"></span>
+        <span class="fi-campo"><label for="fiYieldUS">Yield dividenderas EEUU (%)</label>
+          <input type="text" id="fiYieldUS" inputmode="decimal" placeholder="3,5"></span>
+        <span class="fi-campo"><label for="fiRotacion">Años para rotar</label>
+          <input type="text" id="fiRotacion" inputmode="numeric" placeholder="3"></span>
+        <span class="fi-campo"><label for="fiYield">Yield objetivo (opcional)</label>
+          <input type="text" id="fiYield" inputmode="decimal" placeholder="lo calcula la mezcla"></span>
         <span class="fi-campo"><label for="fiRetorno">Rentabilidad real esperada (%)</label>
           <input type="text" id="fiRetorno" inputmode="decimal" placeholder="6"></span>
         <span class="fi-campo"><label for="fiInflacion">Inflación esperada (%)</label>
@@ -792,12 +804,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260920151256"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260920151256"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260920151256"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260920151256"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260920151256"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260920151256"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260920151256"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260920153348"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260920153348"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260920153348"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260920153348"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260920153348"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260920153348"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260920153348"></script>
 </body>
 </html>
