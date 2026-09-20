@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260920194208">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260920200034">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -314,8 +314,11 @@
     <p class="note">Cuánto rendía cada papel en cada año: <strong>lo que declaró la empresa
       ese año dividido por su precio al cierre de ese mismo año</strong>. Por eso se pueden
       comparar los años entre sí y ver la tendencia — no es el yield sobre lo que tú pagaste
-      (ese está en la tabla «Por activo»). Los promedios usan solo los años completos; el año
-      en curso va marcado con asterisco porque lleva solo parte de los pagos.</p>
+      (ese está en la tabla «Por activo»). Un año en que la empresa <strong>no repartió cuenta
+      como 0%</strong>: si se omitiera, una que dejó de pagar seguiría luciendo el promedio de
+      sus buenos años. No se le exige a un papel un año en que todavía no cotizaba. El año en
+      curso va marcado con asterisco y queda fuera de los promedios, porque lleva solo parte
+      de los pagos.</p>
     <div class="subtabs subtabs-inline" id="divYieldModo">
       <button data-modo="mias" class="active">Solo las que tengo</button>
       <button data-modo="todas">Todas la Bolsa de Santiago</button>
@@ -835,12 +838,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260920194208"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260920194208"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260920194208"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260920194208"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260920194208"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260920194208"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260920194208"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260920200034"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260920200034"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260920200034"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260920200034"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260920200034"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260920200034"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260920200034"></script>
 </body>
 </html>
