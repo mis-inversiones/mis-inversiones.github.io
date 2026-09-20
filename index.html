@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260919225800">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260919231601">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -36,7 +36,6 @@
   <nav id="nav">
     <button data-view="dashboard" class="active">Dashboard</button>
     <button data-view="cuentas">Cuentas</button>
-    <button data-view="activos">Activos</button>
     <button data-view="transacciones">Transacciones</button>
     <button data-view="evolucion">Evolución</button>
     <button data-view="aportes">Aportes</button>
@@ -109,39 +108,27 @@
 <section class="view" id="view-cuentas">
   <div class="chips" id="accountChips"></div>
   <div class="tiles" id="accountTiles"></div>
-  <div class="grid-2">
-    <div class="card">
-      <h3>Evolución de la cuenta</h3>
-      <div class="chart-wrap"><canvas id="chartAccountEvolution"></canvas></div>
-    </div>
-    <div class="card">
-      <h3>Trazabilidad CLP → USD</h3>
-      <div id="fxTrace"></div>
+  <div id="accountOnly">
+    <div class="grid-2">
+      <div class="card">
+        <h3>Evolución de la cuenta</h3>
+        <div class="chart-wrap"><canvas id="chartAccountEvolution"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Trazabilidad CLP → USD</h3>
+        <div id="fxTrace"></div>
+      </div>
     </div>
   </div>
   <div class="card">
     <div class="card-head">
-      <h3>Posiciones de la cuenta</h3>
-      <label class="pos-toggle">
+      <h3 id="accountPosTitle">Posiciones de la cuenta <span class="badge" id="pricesAsOf"></span></h3>
+      <label class="pos-toggle" id="showClosedWrap">
         <input type="checkbox" id="showClosedAcc"> Mostrar posiciones cerradas (cantidad 0)
       </label>
     </div>
+    <p class="note" id="accountPosNota"></p>
     <div class="table-scroll" id="accountPositions"></div>
-  </div>
-</section>
-
-<!-- ==================== 3. ACTIVOS ==================== -->
-<section class="view" id="view-activos">
-  <div class="chips" id="posModeChips">
-    <button data-mode="consolidated" class="active">Consolidado por activo</button>
-    <button data-mode="detail">Detalle por cuenta</button>
-    <label class="pos-toggle">
-      <input type="checkbox" id="showClosed"> Mostrar posiciones cerradas (cantidad 0)
-    </label>
-  </div>
-  <div class="card">
-    <h3 id="positionsTitle">Consolidado por activo <span class="badge" id="pricesAsOf"></span></h3>
-    <div class="table-scroll" id="positionsTable"></div>
   </div>
 </section>
 
@@ -627,12 +614,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260919225800"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260919225800"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260919225800"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260919225800"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260919225800"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260919225800"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260919225800"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260919231601"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260919231601"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260919231601"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260919231601"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260919231601"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260919231601"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260919231601"></script>
 </body>
 </html>
