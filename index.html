@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260920143931">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260920150438">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -646,14 +646,22 @@
     <div class="card">
       <h3>Proyección hasta la meta</h3>
       <div class="chart-wrap tall"><canvas id="chartLibertad"></canvas></div>
-      <p class="note">Todo en <strong>pesos de hoy</strong>: la rentabilidad va descontada de
-        inflación y el costo de vida no se infla, así el número objetivo no se mueve y la fecha
-        es comparable entre una visita y la siguiente. Es una proyección con supuestos, no una
-        promesa: el mercado no rinde lo mismo todos los años.</p>
+      <p class="note">Tu plan es <strong>vivir de los dividendos sin vender capital</strong>,
+        así que la línea verde no es una meta de ahorro cualquiera: es el capital cuyo dividendo
+        paga tu costo de vida. Todo en <strong>pesos de hoy</strong> (la rentabilidad va
+        descontada de inflación), así el objetivo no se mueve y la fecha es comparable entre una
+        visita y la siguiente. Es una proyección con supuestos, no una promesa.</p>
     </div>
     <div class="card">
       <h3>¿Y si cambio el ritmo?</h3>
       <div class="table-scroll" id="fiEscenarios"></div>
+    </div>
+    <div class="card">
+      <h3>Cuánto importa el yield de tu cartera</h3>
+      <p class="note">Es la palanca que más mueve la meta: con el mismo costo de vida, el
+        capital que necesitas cambia según cuánto reparta tu cartera. Subir el yield tiene un
+        costo — una cartera de puro dividendo suele crecer menos de precio.</p>
+      <div class="table-scroll" id="fiSensibilidad"></div>
     </div>
   </div>
 
@@ -682,14 +690,16 @@
       <div class="fi-form">
         <span class="fi-campo"><label for="fiCosto">Costo de vida mensual (CLP)</label>
           <input type="text" id="fiCosto" inputmode="numeric" placeholder="$0"></span>
-        <span class="fi-campo"><label for="fiSwr">Tasa de retiro anual (%)</label>
-          <input type="text" id="fiSwr" inputmode="decimal" placeholder="4"></span>
+        <span class="fi-campo"><label for="fiYield">Yield objetivo de la cartera (%)</label>
+          <input type="text" id="fiYield" inputmode="decimal" placeholder="4"></span>
         <span class="fi-campo"><label for="fiRetorno">Rentabilidad real esperada (%)</label>
           <input type="text" id="fiRetorno" inputmode="decimal" placeholder="6"></span>
         <span class="fi-campo"><label for="fiInflacion">Inflación esperada (%)</label>
           <input type="text" id="fiInflacion" inputmode="decimal" placeholder="3,5"></span>
-        <span class="fi-campo"><label for="fiImpuesto">Impuesto al retirar (%)</label>
+        <span class="fi-campo"><label for="fiImpuesto">Impuesto a los dividendos (%)</label>
           <input type="text" id="fiImpuesto" inputmode="decimal" placeholder="10"></span>
+        <span class="fi-campo"><label for="fiCrecDiv">El dividendo crece al año (%)</label>
+          <input type="text" id="fiCrecDiv" inputmode="decimal" placeholder="2"></span>
         <span class="fi-campo"><label for="fiAporte">Aporte mensual (CLP)</label>
           <input type="text" id="fiAporte" inputmode="numeric" placeholder="tu promedio real"></span>
         <span class="fi-campo"><label for="fiCrece">El aporte crece al año (%)</label>
@@ -782,12 +792,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260920143931"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260920143931"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260920143931"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260920143931"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260920143931"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260920143931"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260920143931"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260920150438"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260920150438"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260920150438"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260920150438"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260920150438"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260920150438"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260920150438"></script>
 </body>
 </html>
