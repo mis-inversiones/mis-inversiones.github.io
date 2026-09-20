@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260920011425">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260920141435">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -35,13 +35,14 @@
   </div>
   <nav id="nav">
     <button data-view="dashboard" class="active">Dashboard</button>
-    <button data-view="cuentas">Cuentas</button>
+    <button data-view="cuentas">Activos</button>
     <button data-view="transacciones">Transacciones</button>
     <button data-view="evolucion">Evolución</button>
     <button data-view="aportes">Aportes</button>
     <button data-view="dividendos">Dividendos</button>
     <button data-view="seguimiento">Seguimiento</button>
     <button data-view="analisis">Análisis</button>
+    <button data-view="libertad">Libertad financiera</button>
     <button data-view="impuestos">Impuestos</button>
     <button data-view="datos">Actualización</button>
   </nav>
@@ -187,6 +188,7 @@
 
 <!-- ==================== 6. APORTES ==================== -->
 <section class="view" id="view-aportes">
+  <div class="chips" id="contribYears"></div>
   <div class="tiles" id="contribTiles"></div>
   <div class="card">
     <h3>Aportes mensuales (CLP + USD convertido a CLP) <span class="badge">meta: $1.200.000/mes</span></h3>
@@ -197,8 +199,10 @@
     <p class="note">Los aportes en USD se convierten a CLP con el tipo de cambio del
       día de cada depósito. Todos los aportes de febrero 2026 (traspaso desde la
       cuenta de acciones chilenas) no cuentan como aporte nuevo para la meta. El "saldo
-      acumulado" corre desde enero 2025: el excedente de un mes bueno se resta del
-      déficit de los meses siguientes, y el mes en curso no suma déficit hasta terminar.</p>
+      acumulado" corre desde <strong>abril 2023</strong> (tu primer sueldo): el excedente de un
+      mes bueno se resta del déficit de los meses siguientes, y el mes en curso no suma déficit
+      hasta terminar. Esa columna es el corrido histórico y no cambia al filtrar por año — los
+      tiles de arriba sí se recalculan para el año elegido.</p>
     <div class="table-scroll" id="contribTable"></div>
   </div>
   <div class="card">
@@ -236,6 +240,7 @@
   <nav class="subtabs" data-view="dividendos">
     <button data-sub="resumen" class="active">Resumen</button>
     <button data-sub="activos">Por activo</button>
+    <button data-sub="matriz">Por año</button>
     <button data-sub="declarados">Declarados por la empresa</button>
     <button data-sub="pagos">Detalle de pagos</button>
   </nav>
@@ -279,6 +284,26 @@
     <div class="table-scroll" id="divByAsset"></div>
   </div>
   </div><!-- /activos -->
+
+  <div class="subview" data-sub="matriz" hidden>
+  <div class="card">
+    <div class="card-head">
+      <h3>Dividendos por activo y año</h3>
+      <div class="card-head-tools">
+        <input type="text" class="table-search" id="divMatrizSearch" placeholder="Buscar activo…">
+        <label class="pos-toggle">
+          <input type="checkbox" id="showClosedMatriz"> Mostrar activos ya vendidos
+        </label>
+      </div>
+    </div>
+    <div class="chips chips-anios" id="divMatrizAnios"></div>
+    <div class="table-scroll" id="divMatrizTabla"></div>
+    <p class="note">Cuánto pagó cada activo en cada año. El <strong>total</strong> y los dos
+      <strong>yields</strong> se calculan solo con los años encendidos: apagar 2022 los recalcula
+      sin ese año. El yield s/valor compara contra el valor actual de la posición y el yield
+      s/costo contra lo invertido, así que un activo vendido no tiene yield (sale «—»).</p>
+  </div>
+  </div><!-- /matriz -->
 
   <div class="subview" data-sub="declarados" hidden>
   <div class="card">
@@ -345,6 +370,29 @@
 
   <div class="card">
     <div class="card-head">
+      <h3>Alertas de precio</h3>
+      <span class="note" id="alertCount"></span>
+    </div>
+    <p class="note">Fija a qué precio quieres que la app te avise. Los montos van en la
+      <strong>moneda de la acción</strong> (las chilenas en pesos), y la alerta se evalúa con el
+      precio en vivo — cuando se cumple queda marcada acá, en verde.</p>
+    <div class="alert-add">
+      <select id="alertTicker"></select>
+      <select id="alertKind"></select>
+      <span class="alert-campo"><label>Precio de compra</label>
+        <input type="text" id="alertLow" inputmode="decimal" placeholder="0"></span>
+      <span class="alert-campo"><label>Precio objetivo</label>
+        <input type="text" id="alertHigh" inputmode="decimal" placeholder="0"></span>
+      <input type="text" id="alertNota" placeholder="Nota (opcional)" maxlength="200">
+      <button id="alertGuardar">Crear alerta</button>
+      <button id="alertCancelar" class="btn small" hidden>Cancelar</button>
+      <span class="note" id="alertMsg"></span>
+    </div>
+    <div id="alertList"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
       <h3>Notas</h3>
       <span class="note" id="notesCount"></span>
     </div>
@@ -374,6 +422,7 @@
     <button data-sub="operaciones">Operaciones</button>
     <button data-sub="simulador">Simulador</button>
     <button data-sub="oportunidades">Cierre y oportunidades</button>
+    <button data-sub="documentos">Para declarar</button>
     <button data-sub="supuestos">Supuestos</button>
   </nav>
 
@@ -450,6 +499,23 @@
       <div id="taxOportunidades"></div>
     </div>
   </div>
+
+  <div class="subview" data-sub="documentos" hidden>
+  <div class="card">
+    <div class="card-head">
+      <h3>Hoja para declarar en el SII</h3>
+      <div class="card-head-tools">
+        <button id="f22Imprimir" class="btn small">Imprimir / guardar PDF</button>
+        <button id="f22CsvVentas" class="btn small">Ventas (CSV)</button>
+        <button id="f22CsvDiv" class="btn small">Dividendos (CSV)</button>
+      </div>
+    </div>
+    <p class="note">Reproduce el <strong>F22 código por código</strong> con los montos que
+      calcula la app, más el respaldo operación por operación. El año es el que elegiste en
+      la subpestaña Resumen. Para guardarlo como PDF usa «Imprimir» y elige «Guardar como PDF».</p>
+    <div id="f22Hoja"></div>
+  </div>
+  </div><!-- /documentos -->
 
   <div class="subview" data-sub="supuestos" hidden>
     <div class="card">
@@ -552,14 +618,90 @@
   <div class="subview" data-sub="ganancia" hidden>
   <div class="card">
     <h3>Qué activo explica tu ganancia</h3>
-    <div class="grid-2">
-      <div class="chart-wrap"><canvas id="chartAttribution"></canvas></div>
-      <div class="table-scroll" id="attributionTable"></div>
+    <div class="grid-2 atrib-grid">
+      <div class="chart-wrap atrib-chart"><canvas id="chartAttribution"></canvas></div>
+      <div class="table-scroll atrib-tabla" id="attributionTable"></div>
     </div>
     <p class="note">Incluye la ganancia no realizada, lo ya realizado en ventas y los dividendos
       cobrados de cada activo. El gráfico muestra los 12 de mayor impacto; la tabla los lista todos.</p>
   </div>
   </div><!-- /ganancia -->
+</section>
+
+<!-- ==================== LIBERTAD FINANCIERA ==================== -->
+<section class="view" id="view-libertad">
+  <nav class="subtabs" data-view="libertad">
+    <button data-sub="camino" class="active">Tu camino</button>
+    <button data-sub="metas">Metas y niveles</button>
+    <button data-sub="supuestos">Supuestos</button>
+  </nav>
+
+  <div class="subview" data-sub="camino">
+    <div class="tiles" id="fiTiles"></div>
+    <div class="card">
+      <h3>Tu avance</h3>
+      <div id="fiBarra"></div>
+      <div id="fiNivel"></div>
+    </div>
+    <div class="card">
+      <h3>Proyección hasta la meta</h3>
+      <div class="chart-wrap tall"><canvas id="chartLibertad"></canvas></div>
+      <p class="note">Todo en <strong>pesos de hoy</strong>: la rentabilidad va descontada de
+        inflación y el costo de vida no se infla, así el número objetivo no se mueve y la fecha
+        es comparable entre una visita y la siguiente. Es una proyección con supuestos, no una
+        promesa: el mercado no rinde lo mismo todos los años.</p>
+    </div>
+    <div class="card">
+      <h3>¿Y si cambio el ritmo?</h3>
+      <div class="table-scroll" id="fiEscenarios"></div>
+    </div>
+  </div>
+
+  <div class="subview" data-sub="metas" hidden>
+    <div class="card">
+      <h3>Hitos del camino</h3>
+      <div id="fiHitos"></div>
+    </div>
+    <div class="card">
+      <h3>Metas por trimestre</h3>
+      <p class="note">Cuánto deberías tener al cierre de cada trimestre para ir en línea con
+        tu proyección. El trimestre en curso se marca aparte.</p>
+      <div class="table-scroll" id="fiTrimestres"></div>
+    </div>
+    <div class="card">
+      <h3>Niveles</h3>
+      <div id="fiNiveles"></div>
+    </div>
+  </div>
+
+  <div class="subview" data-sub="supuestos" hidden>
+    <div class="card">
+      <h3>Tus supuestos</h3>
+      <p class="note">De estos números sale todo lo demás. Se guardan solo en este computador
+        (<code>data/libertad_config.json</code>), igual que tu renta en la vista Impuestos.</p>
+      <div class="fi-form">
+        <span class="fi-campo"><label for="fiCosto">Costo de vida mensual (CLP)</label>
+          <input type="text" id="fiCosto" inputmode="numeric" placeholder="$0"></span>
+        <span class="fi-campo"><label for="fiSwr">Tasa de retiro anual (%)</label>
+          <input type="text" id="fiSwr" inputmode="decimal" placeholder="4"></span>
+        <span class="fi-campo"><label for="fiRetorno">Rentabilidad real esperada (%)</label>
+          <input type="text" id="fiRetorno" inputmode="decimal" placeholder="6"></span>
+        <span class="fi-campo"><label for="fiInflacion">Inflación esperada (%)</label>
+          <input type="text" id="fiInflacion" inputmode="decimal" placeholder="3,5"></span>
+        <span class="fi-campo"><label for="fiImpuesto">Impuesto al retirar (%)</label>
+          <input type="text" id="fiImpuesto" inputmode="decimal" placeholder="10"></span>
+        <span class="fi-campo"><label for="fiAporte">Aporte mensual (CLP)</label>
+          <input type="text" id="fiAporte" inputmode="numeric" placeholder="tu promedio real"></span>
+        <span class="fi-campo"><label for="fiCrece">El aporte crece al año (%)</label>
+          <input type="text" id="fiCrece" inputmode="decimal" placeholder="0"></span>
+        <span class="fi-campo"><label for="fiEdad">Tu edad (opcional)</label>
+          <input type="text" id="fiEdad" inputmode="numeric" placeholder="—"></span>
+        <button id="fiGuardar">Guardar</button>
+        <span class="note" id="fiMsg"></span>
+      </div>
+      <div id="fiExplica"></div>
+    </div>
+  </div>
 </section>
 
 <!-- ==================== 8. ACTUALIZACIÓN ==================== -->
@@ -640,12 +782,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260920011425"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260920011425"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260920011425"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260920011425"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260920011425"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260920011425"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260920011425"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260920141435"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260920141435"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260920141435"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260920141435"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260920141435"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260920141435"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260920141435"></script>
 </body>
 </html>
