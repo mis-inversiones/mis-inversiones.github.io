@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inversiones</title>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260920211342">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260921185528">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -140,6 +140,7 @@
       <select id="fAccount"><option value="">Todas</option></select>
     </label>
     <label>Tipo
+      <label class="pos-toggle"><input type="checkbox" id="txTechnical"> Incluir ajustes y movimientos técnicos</label>
       <select id="fType">
         <option value="">Todos</option>
         <option value="BUY">Compra</option><option value="SELL">Venta</option>
@@ -169,9 +170,7 @@
     <div class="chips" id="indexChips"></div>
     <div class="chips" id="indexYearChips"></div>
     <div class="chart-wrap tall"><canvas id="chartIndexCompare"></canvas></div>
-    <p class="note">Rentabilidad porcentual acumulada desde el inicio del historial. IPSA se aproxima
-      con ECH (iShares MSCI Chile ETF): Yahoo Finance no tiene histórico del índice oficial desde 2019.
-      IPSA e IBEX 35 incluyen el efecto del tipo de cambio contra el dólar.</p>
+    <p class="note">Cartera TWR y ETF comparadores en la misma moneda del selector. Los ETF usan cierres ajustados por distribuciones (proxy de retorno total, antes de impuestos personales). SPY representa S&amp;P 500; QQQ, Nasdaq-100; ECH y EWP son exposiciones a Chile y España, no réplicas exactas de IPSA/IBEX. Las fechas de cobertura se indican bajo el gráfico.</p><p class="note" id="benchmarkCoverage"></p>
   </div>
   <div class="grid-2">
     <div class="card">
@@ -179,7 +178,7 @@
       <div class="chart-wrap"><canvas id="chartAnnual"></canvas></div>
     </div>
     <div class="card">
-      <h3>Costo invertido vs valor actual por activo (USD)</h3>
+      <h3>Costo invertido vs valor actual por activo</h3>
       <div class="chart-wrap"><canvas id="chartCostValue"></canvas></div>
       <p class="note" id="costValueNote" hidden>Se mostrará cuando existan posiciones en acciones.</p>
     </div>
@@ -205,23 +204,7 @@
       tiles de arriba sí se recalculan para el año elegido.</p>
     <div class="table-scroll" id="contribTable"></div>
   </div>
-  <div class="card">
-    <h3>Proyección hacia una meta</h3>
-    <div class="filters">
-      <label>Monto objetivo
-        <input type="number" id="projTarget" min="0" step="100000" placeholder="100000000">
-      </label>
-      <div class="currency-toggle" id="projCurrencyToggle">
-        <button data-cur="CLP" class="active">CLP</button>
-        <button data-cur="USD">USD</button>
-      </div>
-    </div>
-    <div id="projResult"></div>
-    <p class="note">Escenario conservador: solo tu aporte mensual promedio de los últimos
-      12 meses, sin asumir ganancias de mercado. Escenario con rentabilidad: además asume
-      que se repite tu rentabilidad (TWR) anualizada de los últimos 12 meses — es un
-      supuesto, no una garantía; el portafolio ha sido volátil.</p>
-  </div>
+  <p class="note">Las metas de capital están en <a href="#Consolidado/libertad/camino">Libertad financiera → Proyección</a>, con los mismos supuestos de tu plan.</p>
 </section>
 
 <!-- ==================== 6b. DIVIDENDOS ==================== -->
@@ -306,32 +289,7 @@
   </div><!-- /matriz -->
 
   <div class="subview" data-sub="declarados" hidden>
-  <div class="card">
-    <div class="card-head">
-      <h3>Yield declarado por año</h3>
-      <span class="note" id="divYieldNote"></span>
-    </div>
-    <p class="note">Cuánto rendía cada papel en cada año: <strong>lo que declaró la empresa
-      ese año dividido por su precio al cierre de ese mismo año</strong>. Por eso se pueden
-      comparar los años entre sí y ver la tendencia — no es el yield sobre lo que tú pagaste
-      (ese está en la tabla «Por activo»). Un año en que la empresa <strong>no repartió cuenta
-      como 0%</strong>: si se omitiera, una que dejó de pagar seguiría luciendo el promedio de
-      sus buenos años. No se le exige a un papel un año en que todavía no cotizaba. El año en
-      curso va marcado con asterisco y queda fuera de los promedios, porque lleva solo parte
-      de los pagos.</p>
-    <div class="subtabs subtabs-inline" id="divYieldModo">
-      <button data-modo="mias" class="active">Solo las que tengo</button>
-      <button data-modo="todas">Todas la Bolsa de Santiago</button>
-    </div>
-    <div class="chips chips-anios" id="divYieldAnios"></div>
-    <div class="table-scroll" id="divYieldTabla"></div>
-    <p class="note" id="divYieldNotaModo" hidden>Todas las acciones de emisores chilenos que
-      se transan en la Bolsa de Santiago, tengas o no. Las tuyas van marcadas con un punto y
-      conservan exactamente las mismas cifras que en «Solo las que tengo». Los CDI (acciones
-      extranjeras listadas acá, como Apple o Nvidia) quedan fuera: su historial de dividendos
-      es el de su bolsa de origen.</p>
-  </div>
-
+  <p class="note">Consulta el histórico de yields y el mercado chileno en <a href="#Chile/seguimiento">Seguimiento</a>. Aquí se distingue lo recibido de lo declarado por cada empresa.</p>
   <div class="card">
     <div class="card-head">
       <h3>Dividendos declarados por la empresa</h3>
@@ -371,6 +329,34 @@
 
 <!-- ==================== 7. SEGUIMIENTO ==================== -->
 <section class="view" id="view-seguimiento">
+  <details class="card"><summary>Explorar dividendos del mercado chileno</summary>
+  <div class="card">
+    <div class="card-head">
+      <h3>Yield declarado por año</h3>
+      <span class="note" id="divYieldNote"></span>
+    </div>
+    <p class="note">Cuánto rendía cada papel en cada año: <strong>lo que declaró la empresa
+      ese año dividido por su precio al cierre de ese mismo año</strong>. Por eso se pueden
+      comparar los años entre sí y ver la tendencia — no es el yield sobre lo que tú pagaste
+      (ese está en la tabla «Por activo»). Un año en que la empresa <strong>no repartió cuenta
+      como 0%</strong>: si se omitiera, una que dejó de pagar seguiría luciendo el promedio de
+      sus buenos años. No se le exige a un papel un año en que todavía no cotizaba. El año en
+      curso va marcado con asterisco y queda fuera de los promedios, porque lleva solo parte
+      de los pagos.</p>
+    <div class="subtabs subtabs-inline" id="divYieldModo">
+      <button data-modo="mias" class="active">Solo las que tengo</button>
+      <button data-modo="todas">Todas la Bolsa de Santiago</button>
+    </div>
+    <div class="chips chips-anios" id="divYieldAnios"></div>
+    <div class="table-scroll" id="divYieldTabla"></div>
+    <p class="note" id="divYieldNotaModo" hidden>Todas las acciones de emisores chilenos que
+      se transan en la Bolsa de Santiago, tengas o no. Las tuyas van marcadas con un punto y
+      conservan exactamente las mismas cifras que en «Solo las que tengo». Los CDI (acciones
+      extranjeras listadas acá, como Apple o Nvidia) quedan fuera: su historial de dividendos
+      es el de su bolsa de origen.</p>
+  </div>
+
+  </details>
   <div class="card">
     <h3>Agregar a la lista</h3>
     <p class="note">Acciones que quieres vigilar sin tenerlas en cartera. <strong>No entran
@@ -489,8 +475,7 @@
         <h3>Ventas del año y su tratamiento</h3>
       </div>
       <p class="note">Cada venta con su mayor valor en pesos y el régimen que le corresponde.
-        El costo va al tipo de cambio del día de cada compra y, en las chilenas,
-        reajustado por IPC como exige el SII (eso <em>baja</em> el impuesto).</p>
+        El costo usa lotes FIFO; las chilenas conservan fecha original e IPC. Las extranjeras se expresan al FX de cierre del ejercicio, provisional mientras el año esté abierto. Los costos reconstruidos siguen siendo estimaciones.</p>
       <div class="table-scroll" id="taxVentas"></div>
     </div>
     <div class="card">
@@ -504,7 +489,7 @@
       <h3>¿Cuánto impuesto me costaría vender?</h3>
       <p class="note">Calcula el impuesto de una venta <strong>antes</strong> de hacerla, con tu
         tramo real. Para las acciones chilenas con presencia bursátil compara además
-        contra venderlas en 2027, cuando el artículo 107 pasa a 0%.</p>
+        bajo un escenario hipotético de tasa 107 igual a cero, sin presentarlo como norma vigente.</p>
       <p class="note">Puedes simular <strong>varias ventas a la vez</strong>, y conviene:
         el resultado <strong>no es la suma</strong> de simularlas por separado. La exención de
         10 UTA es una sola para todo el año y el Global Complementario es progresivo, así que
@@ -529,7 +514,7 @@
   <div class="subview" data-sub="documentos" hidden>
   <div class="card">
     <div class="card-head">
-      <h3>Hoja para declarar en el SII</h3>
+      <h3>Preparación para declarar — pendiente de certificados</h3>
       <div class="card-head-tools">
         <button id="f22Imprimir" class="btn small">Imprimir / guardar PDF</button>
         <button id="f22CsvVentas" class="btn small">Ventas (CSV)</button>
@@ -550,15 +535,22 @@
     </div>
     <div class="card">
       <h3>Presencia bursátil de tus acciones chilenas</h3>
-      <p class="note">El artículo 107 (10% fijo, y 0% desde 2027) solo aplica a acciones
+      <p class="note">El artículo 107 (10% según texto verificado) solo aplica a acciones
         <strong>con presencia bursátil</strong> compradas y vendidas en bolsa. La CMF la
-        revisa cada trimestre, así que las dudosas se tratan por el régimen general —
-        el más caro. Si tu corredora te confirma que alguna sí tiene, márcala acá.</p>
+        debe acreditarse para la operación. Las dudosas se muestran con régimen general provisional;
+        su impuesto depende de las exenciones y de tu tramo. Confirma el tratamiento con el respaldo de la corredora.</p>
       <div class="table-scroll" id="taxPresencia"></div>
     </div>
     <div class="card">
       <h3>Cómo tributa cada cosa</h3>
       <div class="tax-guia" id="taxGuia"></div>
+      <details><summary>Fuentes y alcance de la revisión · 21-09-2026</summary>
+        <p class="note">Normas: <a href="https://www.bcn.cl/leychile/navegar?idNorma=6368" target="_blank" rel="noopener">Ley de la Renta</a>,
+        <a href="https://www.sii.cl/normativa_legislacion/circulares/2022/circu39.pdf" target="_blank" rel="noopener">art.107: costo y pérdidas</a>,
+        <a href="https://www.sii.cl/normativa_legislacion/circulares/2021/circu43.pdf" target="_blank" rel="noopener">régimen general</a> y
+        <a href="https://www.sii.cl/normativa_legislacion/circulares/2021/circu31.pdf" target="_blank" rel="noopener">crédito extranjero</a>.</p>
+        <p class="note">Pendientes de respaldo: costos reconstruidos, certificados de dividendos y créditos, sueldo, paridad oficial de cierre, eventos corporativos y comisiones. Para art.107 se usa adquisición reajustada; la opción de cierre bursátil oficial requiere antecedentes y no se elige automáticamente. La hoja F22 es una ayuda de preparación, no una declaración certificada.</p>
+      </details>
     </div>
   </div>
 </section>
@@ -572,14 +564,15 @@
     <button data-sub="ganancia">Origen de la ganancia</button>
   </nav>
   <div class="subview" data-sub="cuentas">
+  <div class="card"><h3>Rendimiento del dinero y riesgo</h3><div id="riskSummary"></div><details><summary>Exposición por sector y subyacente</summary><div id="riskDetails"></div></details></div>
   <div class="card">
-    <h3>Ranking de cuentas</h3>
+    <h3>Cuentas en el mismo período</h3><p class="note" id="rankingPeriod"></p>
     <div class="grid-2">
       <div class="chart-wrap"><canvas id="chartAccountRanking"></canvas></div>
       <div class="table-scroll" id="rankingTable"></div>
     </div>
   </div>
-  <div class="grid-2">
+  <div>
     <div class="card">
       <h3>Comisiones de trading pagadas</h3>
       <div class="table-scroll" id="commissionsTable"></div>
@@ -589,13 +582,7 @@
         porque hay corredoras que cobran por acción con un mínimo por orden, donde las
         órdenes chicas pagan mucho más que el promedio.</p>
     </div>
-    <div class="card">
-      <h3>Impuesto retenido por año</h3>
-      <div class="table-scroll" id="taxTable"></div>
-      <p class="note">IBK: filas de impuesto identificadas por descripción. Racional y
-        Zesty: retención NRA del 15% sobre dividendos (tratado con Chile). Chile: los
-        dividendos llegan líquidos, sin retención.</p>
-    </div>
+    <p class="note">Retenciones por año, cuenta y activo: <a href="#Consolidado/dividendos">Dividendos</a>. Estimación anual chilena: <a href="#Consolidado/impuestos">Impuestos</a>.</p>
   </div>
 
   <div class="card">
@@ -683,6 +670,21 @@
         descontada de inflación), así el objetivo no se mueve y la fecha es comparable entre una
         visita y la siguiente. Es una proyección con supuestos, no una promesa.</p>
     </div>
+  <div class="card">
+    <h3>Proyección hacia una meta</h3>
+    <div class="filters">
+      <label>Monto objetivo
+        <input type="number" id="projTarget" min="0" step="100000" placeholder="100000000">
+      </label>
+      <div class="currency-toggle" id="projCurrencyToggle">
+        <button data-cur="CLP" class="active">CLP</button>
+        <button data-cur="USD">USD</button>
+      </div>
+    </div>
+    <div id="projResult"></div>
+    <p class="note">Comparte aporte, crecimiento del aporte y retorno real con tus supuestos de Libertad financiera. Se calcula en pesos de hoy y usa el aporte personal total. Los escenarios son aproximaciones, no promesas.</p>
+  </div>
+    <div class="card"><h3>Sensibilidad al retorno</h3><div id="fiBands" class="table-scroll"></div><p class="note">±4 puntos porcentuales sobre tu supuesto. No representa probabilidades. Capital e ingresos se muestran en pesos de hoy.</p></div>
     <div class="card">
       <h3>¿Y si cambio el ritmo?</h3>
       <div class="table-scroll" id="fiEscenarios"></div>
@@ -741,8 +743,8 @@
           <input type="text" id="fiYield" inputmode="decimal" placeholder="lo calcula la mezcla"></span>
         <span class="fi-campo"><label for="fiRetorno">Rentabilidad real esperada (%)</label>
           <input type="text" id="fiRetorno" inputmode="decimal" placeholder="6"></span>
-        <span class="fi-campo"><label for="fiInflacion">Inflación esperada (%)</label>
-          <input type="text" id="fiInflacion" inputmode="decimal" placeholder="3,5"></span>
+        <span class="fi-campo"><label for="fiInflacion">Inflación de referencia (%) — cálculo en pesos de hoy</label>
+          <input type="text" id="fiInflacion" inputmode="decimal" placeholder="3,5" readonly title="Referencia; el retorno ingresado ya es real y descuenta inflación"></span>
         <span class="fi-campo"><label for="fiImpuesto">Impuesto a los dividendos (%)</label>
           <input type="text" id="fiImpuesto" inputmode="decimal" placeholder="10"></span>
         <span class="fi-campo"><label for="fiCrecDiv">El dividendo crece al año (%)</label>
@@ -763,6 +765,7 @@
 
 <!-- ==================== 8. ACTUALIZACIÓN ==================== -->
 <section class="view" id="view-datos">
+  <div class="card"><h3>Calidad y cobertura de datos</h3><div id="dataQuality"></div></div>
   <div class="card">
     <h3>Subir documento</h3>
     <p class="note">Elige la cuenta y el tipo de documento, suelta el archivo y listo:
@@ -802,6 +805,7 @@
       <div id="reviewQueue"></div>
     </div>
   </div>
+  <details class="card"><summary>Avanzado: archivos y registro de importación</summary>
   <div class="grid-2 grid-top">
     <div class="card">
       <h3>Archivos procesados</h3>
@@ -812,6 +816,7 @@
       <div class="table-scroll log-scroll" id="logTable"></div>
     </div>
   </div>
+  </details>
 </section>
 
 </main>
@@ -822,7 +827,7 @@
       <h3 id="priceModalTitle">Historial de precio</h3>
       <button class="modal-close" id="priceModalClose">&times;</button>
     </div>
-    <div class="chart-wrap"><canvas id="chartPriceHistory"></canvas></div>
+    <div id="assetDetail"></div><div class="chart-wrap"><canvas id="chartPriceHistory"></canvas></div>
   </div>
 </div>
 
@@ -841,12 +846,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260920211342"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260920211342"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260920211342"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260920211342"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260920211342"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260920211342"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260920211342"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260921185528"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260921185528"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260921185528"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260921185528"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260921185528"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260921185528"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260921185528"></script>
 </body>
 </html>
