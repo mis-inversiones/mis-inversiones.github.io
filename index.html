@@ -12,7 +12,7 @@
     document.documentElement.dataset.theme = (t === "light") ? "light" : "dark";
   } catch (e) {}
 </script>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260924235638">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260925192446">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -50,6 +50,7 @@
     <button data-view="dividendos">Dividendos</button>
     <button data-view="seguimiento">Seguimiento</button>
     <button data-view="analisis">Análisis</button>
+    <button data-view="patrimonio">Patrimonio</button>
     <button data-view="libertad">Libertad financiera</button>
     <button data-view="impuestos">Impuestos</button>
     <button data-view="datos">Actualización</button>
@@ -650,6 +651,78 @@
   </div><!-- /ganancia -->
 </section>
 
+<!-- ==================== PATRIMONIO (balance mensual) ==================== -->
+<section class="view" id="view-patrimonio">
+  <nav class="subtabs" data-view="patrimonio">
+    <button data-sub="balance" class="active">Balance mensual</button>
+    <button data-sub="evolucion">Evolución</button>
+    <button data-sub="parametros">Parámetros</button>
+  </nav>
+
+  <div class="subview" data-sub="balance">
+    <div class="chips chips-anios" id="patAnios"></div>
+    <div class="tiles" id="patTiles"></div>
+    <div class="card">
+      <div class="card-head">
+        <h3>Balance patrimonial</h3>
+        <div class="card-head-tools" id="patBarra"></div>
+      </div>
+      <div id="patTabla" class="table-scroll"></div>
+      <div id="patMsg" class="note"></div>
+      <p class="note">Escribe cada monto en pesos y pulsa <strong>Guardar</strong>.
+        La fila <strong>Acciones</strong> la calcula la app con el valor real de tu portafolio
+        al cierre de cada mes (todas las cuentas, con su caja), así que no se edita.
+        <strong>Copiar el mes anterior</strong> rellena las celdas vacías de un mes con las
+        del anterior: casi todas las partidas (auto, creditos) se repiten sin cambio.</p>
+    </div>
+    <div class="card">
+      <h3>Indicadores</h3>
+      <div id="patIndicadores" class="table-scroll"></div>
+      <p class="note" id="patNotaInd"></p>
+    </div>
+  </div>
+
+  <div class="subview" data-sub="evolucion">
+    <div class="card">
+      <h3>Patrimonio neto y activos productivos</h3>
+      <div class="chart-wrap tall"><canvas id="chartPatrimonio"></canvas></div>
+      <p class="note">Solo los meses que tienen datos cargados. Los activos productivos
+        incluyen la fila automática de tu portafolio.</p>
+    </div>
+    <div class="card">
+      <h3>Camino al capital que te mantiene</h3>
+      <div class="chart-wrap"><canvas id="chartPatAvance"></canvas></div>
+      <p class="note" id="patNotaAvance"></p>
+    </div>
+  </div>
+
+  <div class="subview" data-sub="parametros">
+    <div class="card">
+      <h3>Parámetros</h3>
+      <div class="fi-form">
+        <span class="fi-campo"><label for="patEdad">Edad</label><input type="text" id="patEdad" inputmode="numeric"></span>
+        <span class="fi-campo"><label for="patRenta">Renta mensual (CLP)</label><input type="text" id="patRenta" inputmode="numeric"></span>
+        <span class="fi-campo"><label for="patIngreso">Ingreso de libertad mensual (CLP)</label><input type="text" id="patIngreso" inputmode="numeric"></span>
+        <span class="fi-campo"><label for="patTasa">Rentabilidad por flujo (% anual)</label><input type="text" id="patTasa" inputmode="decimal"></span>
+      </div>
+      <button id="patGuardarCfg" class="btn">Guardar parámetros</button>
+      <span id="patCfgMsg" class="note"></span>
+      <div id="patExplica"></div>
+    </div>
+    <div class="card">
+      <h3>Partidas</h3>
+      <div class="note-add">
+        <select id="patNuevoGrupo"></select>
+        <input type="text" id="patNuevoNombre" maxlength="60" placeholder="Nombre de la partida">
+        <button id="patAgregar" class="btn">Agregar</button>
+      </div>
+      <div id="patLineas" class="table-scroll"></div>
+      <p class="note">Las partidas son tuyas: agrega las que te falten y borra las que no uses.
+        Borrar una partida borra también sus montos de todos los meses.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ==================== LIBERTAD FINANCIERA ==================== -->
 <section class="view" id="view-libertad">
   <nav class="subtabs" data-view="libertad">
@@ -855,12 +928,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260924235638"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260924235638"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260924235638"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260924235638"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260924235638"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260924235638"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260924235638"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260925192446"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260925192446"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260925192446"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260925192446"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260925192446"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260925192446"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260925192446"></script>
 </body>
 </html>
