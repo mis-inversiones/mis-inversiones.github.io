@@ -12,7 +12,7 @@
     document.documentElement.dataset.theme = (t === "light") ? "light" : "dark";
   } catch (e) {}
 </script>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260925233149">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260926112225">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -676,6 +676,14 @@
         del anterior: casi todas las partidas (auto, creditos) se repiten sin cambio.</p>
     </div>
     <div class="card">
+      <h3>UF y UTM por mes</h3>
+      <div id="patUnidades" class="table-scroll"></div>
+      <p class="note">Valor al cierre de cada mes (el del mes en curso es el de hoy), desde
+        mindicador.cl — la misma fuente del IPC que usa la vista Impuestos. Una partida en UF o
+        UTM se convierte a pesos con el valor de <strong>su</strong> mes, así el balance de un mes
+        pasado no se recalcula con la UF de hoy.</p>
+    </div>
+    <div class="card">
       <h3>Indicadores</h3>
       <div id="patIndicadores" class="table-scroll"></div>
       <p class="note" id="patNotaInd"></p>
@@ -713,6 +721,7 @@
       <div class="note-add">
         <select id="patNuevoGrupo"></select>
         <input type="text" id="patNuevoNombre" maxlength="60" placeholder="Nombre de la partida">
+        <select id="patNuevaUnidad" title="En qué unidad se lleva esta partida"></select>
         <button id="patAgregar" class="btn">Agregar</button>
       </div>
       <div id="patLineas" class="table-scroll"></div>
@@ -927,12 +936,12 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260925233149"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260925233149"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260925233149"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260925233149"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260925233149"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260925233149"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260925233149"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260926112225"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260926112225"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260926112225"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260926112225"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260926112225"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260926112225"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260926112225"></script>
 </body>
 </html>
