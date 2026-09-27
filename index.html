@@ -2,17 +2,24 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Inversiones</title>
 <!-- Se fija el tema ANTES de cargar el CSS para que no haya parpadeo (un
      instante en oscuro y luego el cambio a claro, o viceversa). -->
 <script>
   try {
     var t = localStorage.getItem("theme");
-    document.documentElement.dataset.theme = (t === "light") ? "light" : "dark";
+    var claro = (t === "light");
+    document.documentElement.dataset.theme = claro ? "light" : "dark";
+    // iPhone: el estilo de la barra de estado se lee al ABRIR la app instalada.
+    // "black-translucent" deja la hora en BLANCO sobre el contenido, ilegible
+    // sobre el encabezado crema del tema claro; ahí se usa la barra opaca. El
+    // CSS no cambia: con la barra opaca env(safe-area-inset-top) vale 0.
+    document.write('<meta name="apple-mobile-web-app-status-bar-style" content="'
+      + (claro ? "default" : "black-translucent") + '">');
   } catch (e) {}
 </script>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260926120939">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260927003356">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -22,8 +29,32 @@
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Inversiones">
+<!-- Pantallas de inicio del iPhone: sin ellas iOS muestra blanco puro
+     mientras la app carga. iOS elige por media query EXACTO de tamaño y
+     densidad. Se regeneran con tools/generar_splash_ios.py -->
+<link rel="apple-touch-startup-image" href="splash/splash-440x956@3x.png"
+      media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-402x874@3x.png"
+      media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-430x932@3x.png"
+      media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-393x852@3x.png"
+      media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-428x926@3x.png"
+      media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-390x844@3x.png"
+      media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-375x812@3x.png"
+      media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-414x896@3x.png"
+      media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-414x896@2x.png"
+      media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-375x667@2x.png"
+      media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-414x736@3x.png"
+      media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
 <script>
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
@@ -937,12 +968,24 @@
   </div>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260926120939"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260926120939"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260926120939"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260926120939"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260926120939"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260926120939"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260926120939"></script>
+<!-- iPhone: iOS no ofrece botón de instalar como Android, hay que enseñar el
+     gesto. Se muestra solo en iOS, fuera de la app ya instalada. -->
+<div id="iosInstall" class="ios-install" hidden>
+  <div class="ios-install-txt">
+    <strong>Instala Inversiones en tu iPhone</strong>
+    <span>Toca <svg class="ios-share" viewBox="0 0 24 24" aria-label="Compartir"><path d="M12 3l4 4h-3v8h-2V7H8l4-4z"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7h-2v7H7v-7H5z"/></svg>
+    abajo y elige <strong>Agregar a inicio</strong>. La primera vez tendrás que iniciar sesión dentro de la app.</span>
+  </div>
+  <button id="iosInstallClose" class="ios-install-x" aria-label="Cerrar">&times;</button>
+</div>
+
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260927003356"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260927003356"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260927003356"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260927003356"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260927003356"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260927003356"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260927003356"></script>
+
 </body>
 </html>
