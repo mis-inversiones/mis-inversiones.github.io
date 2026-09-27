@@ -19,7 +19,7 @@
       + (claro ? "default" : "black-translucent") + '">');
   } catch (e) {}
 </script>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260927003356">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260927124429">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
@@ -241,8 +241,9 @@
       cuenta de acciones chilenas) no cuentan como aporte nuevo para la meta. El "saldo
       acumulado" corre desde <strong>abril 2023</strong> (tu primer sueldo): el excedente de un
       mes bueno se resta del déficit de los meses siguientes, y el mes en curso no suma déficit
-      hasta terminar. Esa columna es el corrido histórico y no cambia al filtrar por año — los
-      tiles de arriba sí se recalculan para el año elegido.</p>
+      hasta terminar. Al elegir un año arriba, el saldo <strong>parte de cero en enero de ese año</strong>:
+      así ves cuánto te falta (o te sobra) de ESE año, sin el arrastre de los anteriores. En
+      «Todo» corre desde el principio.</p>
     <div class="table-scroll" id="contribTable"></div>
   </div>
   <p class="note">Las metas de capital están en <a href="#Consolidado/libertad/camino">Libertad financiera → Proyección</a>, con los mismos supuestos de tu plan.</p>
@@ -979,13 +980,13 @@
   <button id="iosInstallClose" class="ios-install-x" aria-label="Cerrar">&times;</button>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260927003356"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260927003356"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260927003356"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260927003356"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260927003356"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260927003356"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260927003356"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260927124429"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260927124429"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260927124429"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260927124429"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260927124429"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260927124429"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260927124429"></script>
 
 </body>
 </html>
