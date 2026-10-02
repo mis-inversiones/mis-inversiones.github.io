@@ -19,15 +19,15 @@
       + (claro ? "default" : "black-translucent") + '">');
   } catch (e) {}
 </script>
-<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20260930224958">
+<link rel="stylesheet" href="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/styles.css?v=20261001231320">
 
 <!-- PWA: instalación como app + iconos (rutas relativas → sirven igual en
      Flask local y en GitHub Pages). -->
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#05080d">
-<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/favicon-32.png?v=20261001" type="image/png">
+<link rel="icon" href="icons/favicon-32.png?v=20261001" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=20261001">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Inversiones">
 <!-- Pantallas de inicio del iPhone: sin ellas iOS muestra blanco puro
@@ -62,11 +62,19 @@
     });
   }
 </script>
+
+<style id="app-branding">
+.app-brand-image{width:48px;height:48px;object-fit:contain;display:block;flex-shrink:0}
+.logo:has(.app-brand-image){width:48px;height:48px;background:none;border-radius:0;box-shadow:none;padding:0}
+.brand,.topbar-brand{display:flex;align-items:center;gap:10px}
+header h1{display:flex;align-items:center;gap:10px}header h1::before{display:none!important}
+@media(max-width:640px){.app-brand-image,.logo:has(.app-brand-image){width:40px;height:40px}}
+</style>
 </head>
 <body>
 
 <header>
-  <h1>Inversiones</h1>
+  <h1><img class="app-brand-image" src="icons/icon-192.png" alt="" width="48" height="48">Inversiones</h1>
   <div class="portfolio-toggle" id="portfolioToggle">
     <button data-portfolio="EEUU" class="active">EEUU</button>
     <button data-portfolio="Chile">Chile</button>
@@ -980,13 +988,13 @@
   <button id="iosInstallClose" class="ios-install-x" aria-label="Cerrar">&times;</button>
 </div>
 
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20260930224958"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20260930224958"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20260930224958"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20260930224958"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20260930224958"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20260930224958"></script>
-<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20260930224958"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote-config.js?v=20261001231320"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/supabase.js?v=20261001231320"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chart.umd.js?v=20261001231320"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/hammer.min.js?v=20261001231320"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/chartjs-plugin-zoom.min.js?v=20261001231320"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/remote.js?v=20261001231320"></script>
+<script src="https://ivzzgeoeygggaoazcoeq.supabase.co/storage/v1/object/public/dashboard/app.js?v=20261001231320"></script>
 
 </body>
 </html>
