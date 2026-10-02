@@ -8,7 +8,7 @@
  *   bucket): pass-through directo a la red, SIN cachear — así el cache-buster
  *   de remote.js y los datos en vivo siguen intactos.
  */
-const CACHE = "inversiones-shell-v4";   // v4 (27-09-2026): iPhone — áreas seguras y
+const CACHE = "inversiones-shell-brand-20261001";   // v4 (27-09-2026): iPhone — áreas seguras y
                                         // pantallas de inicio en el <head>
 const SHELL = [
   "./",
